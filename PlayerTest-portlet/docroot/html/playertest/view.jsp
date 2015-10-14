@@ -276,7 +276,7 @@
 	<div class="control-group">
         <b>Family Physician:</b>
         <div class="controls">
-            <input name="physician" id="physician" type="text">
+            <input name="physician" id="physician" type="text"> 
         </div>
     </div>
     	<div class="control-group">

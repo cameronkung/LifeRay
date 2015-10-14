@@ -1,6 +1,7 @@
 package com.liferay4u;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -10,10 +11,14 @@ import javax.portlet.PortletException;
 
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
 
 public class PlayerTest extends MVCPortlet {
        
-public void actionMethod(ActionRequest actionRequest, ActionResponse actionResponse) throws SQLException {
+public void actionMethod(ActionRequest actionRequest, ActionResponse actionResponse) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+	
+	//player table
 	
 	String firstName = ParamUtil.getString(actionRequest,"firstName");
 	String lastName = ParamUtil.getString(actionRequest,"lastName");
@@ -31,49 +36,78 @@ public void actionMethod(ActionRequest actionRequest, ActionResponse actionRespo
 	String emailTwo = ParamUtil.getString(actionRequest,"emailTwo");
 	String occupationTwo = ParamUtil.getString(actionRequest,"occupationTwo");
 	Double cost = ParamUtil.getDouble(actionRequest,"leagueFee");
+	
+	//medical_release table
+	String physician= ParamUtil.getString(actionRequest,"physician");
+	String physPhone= ParamUtil.getString(actionRequest,"physPhone");
+	String physAddress= ParamUtil.getString(actionRequest,"physAddress");
+	String physAddressTwo= ParamUtil.getString(actionRequest,"physAddressTwo");
+	String physCity= ParamUtil.getString(actionRequest,"physCity");
+	String physState= ParamUtil.getString(actionRequest,"physState");
+	String physZipcode= ParamUtil.getString(actionRequest,"physZipcode");
+	String hospitalPreference= ParamUtil.getString(actionRequest,"hospitalPreference");
+	String insurance= ParamUtil.getString(actionRequest,"insurance");
+	String policyNumber= ParamUtil.getString(actionRequest,"policyNumber");
+	String groupID= ParamUtil.getString(actionRequest,"groupID");
+	String emergencyContact = ParamUtil.getString(actionRequest,"emergencyContact");
+	String relationship = ParamUtil.getString(actionRequest,"relationship");
+	String emPhone = ParamUtil.getString(actionRequest,"emPhone");
+	String emergencyContactTwo = ParamUtil.getString(actionRequest,"emergencyContactTwo");
+	String relationshipTwo = ParamUtil.getString(actionRequest,"relationshipTwo");
+	String emPhoneTwo = ParamUtil.getString(actionRequest,"emPhoneTwo");
+	
+	
+	//String url = "jdbc:mysql://gll.eil-server.cba.ua.edu/gll_db"; //"test" = name of database
+	//String driver = "com.mysql.jdbc.Driver";
+	//String username = "ckung";
+	//String password = "GLLAllstars2015";
+	//Class.forName(driver).newInstance();
+	//java.sql.Connection c = DriverManager.getConnection(url, username, password);
 	dbConnector db = new dbConnector();
+	//java.sql.Statement s= c.createStatement();
+	//s.executeUpdate("INSERT INTO medical_release (family_physician, physician_phone, physician_address, physician_address_2, physician_city, physician_state, physician_zip, hospital_pref, insurance_carrier, insurance_policy_num, insurance_groupid, emg_contact1, emg_relationship1, emg_phone1, emg_contact2, emg_relationship2, emg_phone2) VALUE ('"+physician+"','"+physPhone+"', '"+physAddress+"','"+physAddressTwo+"', '"+physCity+"', '"+physState+"','"+physZipcode+"', '"+hospitalPreference+"', '"+insurance+"', '"+policyNumber+"', '"+groupID+"', '"+emergencyContact+"', '"+relationship+"', '"+emPhone+"', '"+emergencyContactTwo+"', '"+relationshipTwo+"', '"+emPhoneTwo+"')");
 	
+	String query0 = "INSERT INTO medical_release (family_physician, physician_phone, physician_address, physician_address_2, physician_city, physician_state, physician_zip, hospital_pref, insurance_carrier, insurance_policy_num, insurance_groupid, emg_contact1, emg_relationship1, emg_phone1, emg_contact2, emg_relationship2, emg_phone2)"
+					+ "VALUES" + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	PreparedStatement st0 = db.conn.prepareStatement(query0);
+	st0.setString(1, physician);
+	st0.setString(2, physPhone);
+	st0.setString(3, physAddress);
+	st0.setString(4, physAddressTwo);
+	st0.setString(5, physCity);
+	st0.setString(6, physState);
+	st0.setString(7, physZipcode);
+	st0.setString(8, hospitalPreference);
+	st0.setString(9, insurance);
+	st0.setString(10, policyNumber);
+	st0.setString(11, groupID);
+	st0.setString(12, emergencyContact);
+	st0.setString(13, relationship);
+	st0.setString(14, emPhone);
+	st0.setString(15, emergencyContactTwo);
+	st0.setString(16, relationshipTwo);
+	st0.setString(17, emPhoneTwo);
+	st0.executeUpdate();
 	
-	String query = "INSERT INTO player (user_ID, league_ID, f_name, l_name, gender, phone, parent1_f_name, parent1_l_name, parent1_phone, parent1_email, parent1_occupation,parent2_f_name, parent2_l_name, parent2_phone, parent2_email, parent2_occupation, cost)" + 
-			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	/*String query = "INSERT INTO player (f_name, l_name, gender, phone, parent1_f_name, parent1_l_name, parent1_phone, parent1_email, parent1_occupation, parent2_f_name, parent2_l_name, parent2_phone, parent2_email, parent2_occupation, cost)" + 
+			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = db.conn.prepareStatement(query);
-	st.setInt(1, 0);
-	st.setInt(2, 0);
-	st.setString(3, "asdf");
-	st.setString(4, "asdf");
-	st.setString(5, "m");
-	st.setString(6, "2052609144");
-	st.setString(7, "asdf");
-	st.setString(8, "ddddd");
-	st.setString(9, "2052609144");
-	st.setString(10, "cameronkung@yahoo.com");
-	st.setString(11, "asdf");
-	st.setString(12, "asdfff");
-	st.setString(13, "asdsd");
-	st.setString(14, "2052609144");
-	st.setString(15, "cameronkung@yahoo.com");
-	st.setString(16, "asdfser");
-	st.setDouble(17, 25);
-	
-	
-	/*st.setString(4, firstName);
-	st.setString(5, lastName);
-	st.setDate(6, birthdate);
-	st.setString(7, gender);
-	st.setString(8, phone);
-	st.setString(9, firstNameOne);
-	st.setString(10, lastNameOne);
-	st.setString(11, pOnePhone);
-	st.setString(12, emailOne);
-	st.setString(13, occupationOne);
-	st.setString(14, firstNameTwo);
-	st.setString(15, lastNameTwo);
-	st.setString(16, pTwoPhone);
-	st.setString(17, emailTwo);
-	st.setString(18, occupationTwo);
-	st.setDouble(19, cost);*/
-	
-	st.execute();
+	st.setString(1, firstName);
+	st.setString(2, lastName);
+	st.setString(3, gender);
+	st.setString(4, phone);
+	st.setString(5, firstNameOne);
+	st.setString(6, lastNameOne);
+	st.setString(7, pOnePhone);
+	st.setString(8, emailOne);
+	st.setString(9, occupationOne);
+	st.setString(10, firstNameTwo);
+	st.setString(11, lastNameTwo);
+	st.setString(12, pTwoPhone);
+	st.setString(13, emailTwo);
+	st.setString(14, occupationTwo);
+	st.setDouble(15, cost);
+	st.execute();*/
 
     actionResponse.setRenderParameter("mvcPath","/html/playertest/success.jsp");
        }
