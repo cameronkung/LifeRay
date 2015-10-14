@@ -56,40 +56,72 @@ public void actionMethod(ActionRequest actionRequest, ActionResponse actionRespo
 	String relationshipTwo = ParamUtil.getString(actionRequest,"relationshipTwo");
 	String emPhoneTwo = ParamUtil.getString(actionRequest,"emPhoneTwo");
 	
-	
-	//String url = "jdbc:mysql://gll.eil-server.cba.ua.edu/gll_db"; //"test" = name of database
-	//String driver = "com.mysql.jdbc.Driver";
-	//String username = "ckung";
-	//String password = "GLLAllstars2015";
-	//Class.forName(driver).newInstance();
-	//java.sql.Connection c = DriverManager.getConnection(url, username, password);
 	dbConnector db = new dbConnector();
-	//java.sql.Statement s= c.createStatement();
-	//s.executeUpdate("INSERT INTO medical_release (family_physician, physician_phone, physician_address, physician_address_2, physician_city, physician_state, physician_zip, hospital_pref, insurance_carrier, insurance_policy_num, insurance_groupid, emg_contact1, emg_relationship1, emg_phone1, emg_contact2, emg_relationship2, emg_phone2) VALUE ('"+physician+"','"+physPhone+"', '"+physAddress+"','"+physAddressTwo+"', '"+physCity+"', '"+physState+"','"+physZipcode+"', '"+hospitalPreference+"', '"+insurance+"', '"+policyNumber+"', '"+groupID+"', '"+emergencyContact+"', '"+relationship+"', '"+emPhone+"', '"+emergencyContactTwo+"', '"+relationshipTwo+"', '"+emPhoneTwo+"')");
 	
 	String query0 = "INSERT INTO medical_release (family_physician, physician_phone, physician_address, physician_address_2, physician_city, physician_state, physician_zip, hospital_pref, insurance_carrier, insurance_policy_num, insurance_groupid, emg_contact1, emg_relationship1, emg_phone1, emg_contact2, emg_relationship2, emg_phone2)"
 					+ "VALUES" + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st0 = db.conn.prepareStatement(query0);
+	
 	st0.setString(1, physician);
 	st0.setString(2, physPhone);
 	st0.setString(3, physAddress);
-	st0.setString(4, physAddressTwo);
+	if(physAddressTwo!=""){
+		st0.setString(4, physAddressTwo);
+	}
+	else{
+		st0.setString(4,null);
+	}
 	st0.setString(5, physCity);
 	st0.setString(6, physState);
 	st0.setString(7, physZipcode);
 	st0.setString(8, hospitalPreference);
-	st0.setString(9, insurance);
-	st0.setString(10, policyNumber);
-	st0.setString(11, groupID);
+	if(insurance!=""){
+		st0.setString(9, insurance);
+	}
+	else{
+		st0.setString(9, null);
+	}
+	if(policyNumber!=""){
+		st0.setString(10, policyNumber);
+	}
+	else{
+		st0.setString(10, null);
+	}
+	if(groupID!=""){
+		st0.setString(11, groupID);
+	}
+	else{
+		st0.setString(11, null);
+	}
+
 	st0.setString(12, emergencyContact);
 	st0.setString(13, relationship);
 	st0.setString(14, emPhone);
 	st0.setString(15, emergencyContactTwo);
-	st0.setString(16, relationshipTwo);
-	st0.setString(17, emPhoneTwo);
+	
+	/*if(emergencyContactTwo!=""){
+		st0.setString(15, emergencyContactTwo);
+	}
+	else{
+		st0.setString(15, null);
+	}*/
+	
+	if(relationshipTwo!=""){
+		st0.setString(16, relationshipTwo);
+	}
+	else{
+		st0.setString(16, null);
+	}
+	if(emPhoneTwo!=""){
+		st0.setString(17, emPhoneTwo);
+	}
+	else{
+		st0.setString(17, null);
+	}
+	
 	st0.executeUpdate();
 	
-	/*String query = "INSERT INTO player (f_name, l_name, gender, phone, parent1_f_name, parent1_l_name, parent1_phone, parent1_email, parent1_occupation, parent2_f_name, parent2_l_name, parent2_phone, parent2_email, parent2_occupation, cost)" + 
+	String query = "INSERT INTO player (f_name, l_name, gender, phone, parent1_f_name, parent1_l_name, parent1_phone, parent1_email, parent1_occupation, parent2_f_name, parent2_l_name, parent2_phone, parent2_email, parent2_occupation, cost)" + 
 			" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	PreparedStatement st = db.conn.prepareStatement(query);
 	st.setString(1, firstName);
@@ -107,7 +139,7 @@ public void actionMethod(ActionRequest actionRequest, ActionResponse actionRespo
 	st.setString(13, emailTwo);
 	st.setString(14, occupationTwo);
 	st.setDouble(15, cost);
-	st.execute();*/
+	st.execute();
 
     actionResponse.setRenderParameter("mvcPath","/html/playertest/success.jsp");
        }
